@@ -2,7 +2,6 @@ from pydantic import BaseModel
 
 
 class GoodsDataDTO(BaseModel):
-        id_: int             # id
         amount: int         # 재고
         discount_time: str  # 할인 시간 "HH:MM~HH:MM"
         original_price: int # 할인 전 가격

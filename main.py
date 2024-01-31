@@ -1,9 +1,9 @@
 from fastapi import FastAPI
 from base.base_model import CommonResponseModel
 from base.response_code import ResponseCode
-from service.service import Service
-from repository.repository import Repository
-from dto.dto import GoodsDataDTO, PredictionDTO
+from base.service import Service
+from base.repository import Repository
+from base.dto import GoodsDataDTO, PredictionDTO
 
 from dotenv import load_dotenv
 
@@ -19,7 +19,7 @@ DB_ACCESS_KEY_ID = os.getenv("DB_ACCESS_KEY_ID")
 DB_SECRET_ACCESS_KEY = os.getenv("DB_SECRET_ACCESS_KEY")
 
 # 서비스 인스턴스
-service = Service(repo=Repositroy(envs=(DB_ENDPOINT_URL, DB_REGION_NAME, DB_ACCESS_KEY_ID, DB_SECRET_ACCESS_KEY)))
+service = Service(repo=Repository(envs=(DB_ENDPOINT_URL, DB_REGION_NAME, DB_ACCESS_KEY_ID, DB_SECRET_ACCESS_KEY)))
 
 app = FastAPI()
 
@@ -33,8 +33,15 @@ async def root():
 @app.get("/stores/{store_id}/inventories", response_model=CommonResponseModel)
 async def create_inventory(store_id: int):
     data: list[GoodsDataDTO] = service.get_inventories_list(store_id)
-    data = [i.dict() for i in data]
+    # data = [i.dict() for i in data]
     return CommonResponseModel(success=True, code=ResponseCode.SUCCESS, data=data)
+
+
+@app.post("/stores/inventories")
+async def create_inventory(data: GoodsDataDTO):
+    service.append_inventory(data)
+    return CommonResponseModel(success=True, code=ResponseCode.SUCCESS, data="")
+
 
 
 """
