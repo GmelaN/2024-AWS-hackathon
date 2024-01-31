@@ -76,6 +76,28 @@ async def buy_product(data: GoodsDataDTO):
     result: bool = service.buy_inventory(data)
     return CommonResponseModel(success=True, code=ResponseCode.SUCCESS, data=result)
 
+"""
+Chat GPT
+"""
+@app.post("/chat/{data}", response_model=CommonResponseModel)
+async def chat(data: str):
+    import openai
+
+    OPENAI_API_KEY=""
+    openai.api_key = OPENAI_API_KEY
+    model = "gpt-3.5-turbo"
+
+    response = openai.chat.completions.create(
+        model=model,
+        messages=[{
+            "role": "user",
+            "content": data
+        }],
+        temperature=0.5
+    ).choices[0].message.content
+
+    return CommonResponseModel(success=True, code=ResponseCode.SUCCESS, data=response)
+
 
 if __name__ == "__main__":
     import uvicorn
