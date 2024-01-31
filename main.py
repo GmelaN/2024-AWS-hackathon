@@ -7,6 +7,8 @@ from base.dto import GoodsDataDTO, PredictionDTO
 
 from dotenv import load_dotenv
 
+from starlette.middleware.cors import CORSMiddleware
+
 import os
 
 
@@ -22,6 +24,20 @@ DB_SECRET_ACCESS_KEY = os.getenv("DB_SECRET_ACCESS_KEY")
 service = Service(repo=Repository(envs=(DB_ENDPOINT_URL, DB_REGION_NAME, DB_ACCESS_KEY_ID, DB_SECRET_ACCESS_KEY)))
 
 app = FastAPI()
+
+origins = [
+    "*",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
 
 @app.get("/", response_model=CommonResponseModel)
 async def root():

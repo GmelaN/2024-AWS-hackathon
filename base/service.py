@@ -17,5 +17,3 @@ class Service:
 
     def get_sales_rate_predictions(self, store_id) -> list[PredictionDTO]:
         return [].append(PredictionDTO(0.0))
-        
-    
