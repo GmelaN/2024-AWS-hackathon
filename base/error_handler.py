@@ -5,6 +5,7 @@ from fastapi import HTTPException
 from base.base_model import CommonResponseModel
 from base.response_code import ResponseCode
 
+
 app = FastAPI()
 
 @app.exception_handler(HTTPException)
