@@ -38,7 +38,6 @@ app.add_middleware(
 )
 
 
-
 @app.get("/", response_model=CommonResponseModel)
 async def root():
     return CommonResponseModel(success=True, data=f"hello world!", code=ResponseCode.SUCCESS)
@@ -59,7 +58,6 @@ async def create_inventory(data: GoodsDataDTO):
     return CommonResponseModel(success=True, code=ResponseCode.SUCCESS, data="")
 
 
-
 """
 특정 가게의 머신러닝 예측값 조회
 """
@@ -69,6 +67,14 @@ async def get_sales_rate_predictions(store_id: int):
     data = [i.dict() for i in data]
     return CommonResponseModel(success=True, code=ResponseCode.SUCCESS, data=data)
 
+
+"""
+특정 가게의 물품 구매
+"""
+@app.post("/stores/inventories/buy", response_model=CommonResponseModel)
+async def buy_product(data: GoodsDataDTO):
+    result: bool = service.buy_inventory(data)
+    return CommonResponseModel(success=True, code=ResponseCode.SUCCESS, data=result)
 
 
 if __name__ == "__main__":

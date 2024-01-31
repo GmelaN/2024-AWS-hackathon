@@ -17,3 +17,15 @@ class Service:
 
     def get_sales_rate_predictions(self, store_id) -> list[PredictionDTO]:
         return [].append(PredictionDTO(0.0))
+    
+    def buy_inventory(self, data: GoodsDataDTO) -> bool:
+        self.repo.delete_inventory(data)
+        data.amount = int(data.amount)
+
+        if data.amount == 1:
+            return True
+
+        data.amount -= 1
+        data.amount = str(data.amount)
+        self.append_inventory(data)
+        return True

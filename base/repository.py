@@ -19,8 +19,15 @@ class Repository:
         data["id"] = self.id
         self.id += 1
         
-        result = self.goods_table.put_item(
-            Item=data
-        )
-    
+        result = self.goods_table.put_item(Item=data)
 
+    def delete_inventory(self, goods_data: GoodsDataDTO) -> None:
+        aa = self.goods_table.scan()["Items"]
+        dict_data = goods_data.dict()
+
+        for i in range(len(aa)):
+            dict_data['id'] = aa[i]["id"]
+
+            if aa[i] == dict_data:
+                self.goods_table.delete_item(Key={"id": dict_data["id"]})
+                break
