@@ -1,2 +1,0 @@
-class InventoryItem:
-    pass
